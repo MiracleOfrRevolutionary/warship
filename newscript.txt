@@ -1,0 +1,101 @@
+offkey = "capslock"  ----总开关按键[可切换按键 "capslock"(大写锁定)、"numlock"(数字锁定)、"scrolllock"(滚动锁定键)]
+
+---返回坐标---
+x = 32767 
+y = 2400
+--------------
+-----坐标1-----
+x1 = 32767
+y1 = 36666
+---------------
+-----坐标2-----
+x2 = 32546
+y2 = 28850
+---------------
+-----坐标3-----
+x3 = 33331
+y3 = 28729
+---------------
+-----坐标4-----
+x4 = 26000
+y4 = 30000
+---------------
+-----坐标5-----
+x5 = 39000
+y5 = 32000
+---------------
+--视角平移幅度--
+MovePower = 13 
+---------------- 
+--视角平移速度--
+MoveSpeed = 0 
+---------------- 
+--宏-启动游戏--
+LaunchGame = "Game" --引号内Game改成宏的名字
+----------------
+----------------
+S_num = 0
+
+local a = 19
+local b = 11
+local c = 0 == 1
+local d = not c
+local e = nil
+local f = ""
+local g = _G
+local h = _ENV
+
+local i = g["tonumber"]
+
+return (function(...)
+    g["timemin"] = "2025/01/01 22:25:00"
+    g["timemax"] = "2050/01/01 23:59:59"
+    g["OnEvent"] = function(j,k)
+        if g["GetDate"]("%Y/%m/%d %H:%M:%S") > g["timemax"] or g["GetDate"]("%Y/%m/%d %H:%M:%S") < g["timemin"] then 
+            g["ClearLog"]()
+            g["OutputLogMessage"](" Please Update \n")
+        end
+        if g["GetDate"]("%Y/%m/%d %H:%M:%S") > g["timemin"] and g["GetDate"]("%Y/%m/%d %H:%M:%S") < g["timemax"] then
+            g["EnablePrimaryMouseButtonEvents"](d)
+            while j == "PROFILE_ACTIVATED" do 
+                if g["IsKeyLockOn"](g["offkey"]) then 
+                    g["Script"] = not g["Script"]
+                    g["ClearLog"]()
+                    g["OutputLogMessage"](" ON \n")
+                end
+                if g["Script"] then
+                    g["Main"]()
+                end
+            end
+        end
+    end
+    
+    -- Main function
+    g["Main"] = function()
+        local date = g["GetDate"]("%d%H%M%S")
+        local sub1 = g["tonumber"](date:sub(-2, -1))
+        local sub2 = g["tonumber"](date:sub(-4, -3))
+        local sub3 = g["tonumber"](date:sub(-6, -5))
+        local sub4 = g["tonumber"](date:sub(-8, -7))
+        g["currentTotalSecond1"] = sub4 * 24 * 60 * 60 + sub3 * 60 * 60 + sub2 * 60 + sub1
+      
+        local dateNext = g["GetDate"]("%d%H%M%S")
+        local nextSub1 = g["tonumber"](dateNext:sub(-2, -1))
+        local nextSub2 = g["tonumber"](dateNext:sub(-4, -3))
+        local nextSub3 = g["tonumber"](dateNext:sub(-6, -5))
+        local nextSub4 = g["tonumber"](dateNext:sub(-8, -7))
+        g["currentTotalSecond3"] = nextSub4 * 24 * 60 * 60 + nextSub3 * 60 * 60 + nextSub2 * 60 + nextSub1
+    end
+    
+    -- Script control
+    g["ScriptLoop"] = function()
+        for i = 1, g["S_num"] do
+            g["Sleep"](100)
+            g["PressKey"]("s")
+            g["Sleep"](150)
+            g["ReleaseKey"]("s")
+            g["Sleep"](150)
+        end
+    end
+    
+end)()
